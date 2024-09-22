@@ -1,0 +1,184 @@
+class Pessoa {
+  int pesId;
+  String pesNome;
+  DateTime pesDataNascimento;
+  String pesSexo;
+  String? pesMae;
+  String? pesPai;
+  String enderecoCompleto;
+  String email;
+  String telefone;
+  String? foto;
+  String estadoCivil;
+  String profissao;
+
+
+  Pessoa({
+    required this.pesId,
+    required this.pesNome,
+    required this.pesDataNascimento,
+    required this.pesSexo,
+    this.pesMae,
+    this.pesPai,
+    required this.enderecoCompleto,
+    required this.email,
+    required this.telefone,
+    this.foto,
+    required this.estadoCivil,
+    required this.profissao,
+  });
+
+
+  int calcularIdade() {
+    final hoje = DateTime.now();
+    int idade = hoje.year - pesDataNascimento.year;
+
+    if (hoje.month < pesDataNascimento.month ||
+        (hoje.month == pesDataNascimento.month && hoje.day < pesDataNascimento.day)) {
+      idade--;
+    }
+
+    return idade;
+  }
+
+ 
+  static void listarPessoas(List<Pessoa> pessoas) {
+    if (pessoas.isEmpty) {
+      print("Nenhuma pessoa cadastrada.");
+    } else {
+      for (var pessoa in pessoas) {
+        print(pessoa);
+      }
+    }
+  }
+
+ 
+  static Pessoa? buscarTelefone(List<Pessoa> pessoas, String telefone) {
+    for (var pessoa in pessoas) {
+      if (pessoa.telefone == telefone) {
+        return pessoa;
+      }
+    }
+    print("Nenhuma pessoa encontrada com o telefone $telefone.");
+    return null;
+  }
+
+
+  @override
+  String toString() {
+    return '''
+Pessoa:
+  ID: $pesId
+  Nome: $pesNome
+  Data de Nascimento: ${pesDataNascimento.toIso8601String()}
+  Sexo: $pesSexo
+  Nome da Mãe: ${pesMae ?? "Não informado"}
+  Nome do Pai: ${pesPai ?? "Não informado"}
+  Endereço: $enderecoCompleto
+  E-mail: $email
+  Telefone: $telefone
+  Foto: ${foto ?? "Sem foto"}
+  Estado Civil: $estadoCivil
+  Profissão: $profissao
+  Idade: ${calcularIdade()} anos
+''';
+  }
+}
+
+void main() {
+
+  List<Pessoa> listaDePessoas = [];
+
+
+  Pessoa pessoa1 = Pessoa(
+    pesId: 1,
+    pesNome: "João Silva",
+    pesDataNascimento: DateTime(1985, 5, 23),
+    pesSexo: "Masculino",
+    pesMae: "Maria Silva",
+    pesPai: "José Silva",
+    enderecoCompleto: "Rua ABC, 123, São Paulo, SP",
+    email: "joao.silva@email.com",
+    telefone: "(11) 99999-9999",
+    foto: "link_foto_joao.jpg",
+    estadoCivil: "Solteiro",
+    profissao: "Engenheiro",
+  );
+
+
+  Pessoa pessoa2 = Pessoa(
+    pesId: 2,
+    pesNome: "Maria Oliveira",
+    pesDataNascimento: DateTime(1990, 11, 15),
+    pesSexo: "Feminino",
+    pesMae: "Ana Oliveira",
+    pesPai: "Carlos Oliveira",
+    enderecoCompleto: "Rua XYZ, 456, Rio de Janeiro, RJ",
+    email: "maria.oliveira@email.com",
+    telefone: "(21) 98888-8888",
+    foto: "link_foto_maria.jpg",
+    estadoCivil: "Casada",
+    profissao: "Médica",
+  );
+
+
+  Pessoa pessoa3 = Pessoa(
+    pesId: 3,
+    pesNome: "Pedro Souza",
+    pesDataNascimento: DateTime(1975, 3, 10),
+    pesSexo: "Masculino",
+    pesMae: "Clara Souza",
+    enderecoCompleto: "Avenida Central, 789, Belo Horizonte, MG",
+    email: "pedro.souza@email.com",
+    telefone: "(31) 98765-4321",
+    foto: "link_foto_pedro.jpg",
+    estadoCivil: "Divorciado",
+    profissao: "Advogado",
+  );
+
+
+  Pessoa pessoa4 = Pessoa(
+    pesId: 4,
+    pesNome: "Ana Costa",
+    pesDataNascimento: DateTime(2000, 6, 5),
+    pesSexo: "Feminino",
+    pesMae: "Luiza Costa",
+    pesPai: "Paulo Costa",
+    enderecoCompleto: "Rua da Paz, 100, Recife, PE",
+    email: "ana.costa@email.com",
+    telefone: "(81) 99900-1234",
+    foto: "link_foto_ana.jpg",
+    estadoCivil: "Solteira",
+    profissao: "Estudante",
+  );
+
+
+  Pessoa pessoa5 = Pessoa(
+    pesId: 5,
+    pesNome: "Lucas Mendes",
+    pesDataNascimento: DateTime(1988, 9, 30),
+    pesSexo: "Masculino",
+    enderecoCompleto: "Rua das Palmeiras, 101, Curitiba, PR",
+    email: "lucas.mendes@email.com",
+    telefone: "(41) 98777-1212",
+    estadoCivil: "Casado",
+    profissao: "Designer",
+  );
+
+ 
+  listaDePessoas.addAll([pessoa1, pessoa2, pessoa3, pessoa4, pessoa5]);
+
+  print("Lista de Pessoas:");
+  Pessoa.listarPessoas(listaDePessoas);
+
+
+  print("\nBuscando pessoa pelo telefone '(31) 98765-4321':");
+  Pessoa? pessoaEncontrada = Pessoa.buscarTelefone(listaDePessoas, "(31) 98765-4321");
+  if (pessoaEncontrada != null) {
+    print("Pessoa encontrada:\n$pessoaEncontrada");
+  }
+
+
+  print("\nBuscando pessoa pelo telefone '(99) 99999-9999':");
+  Pessoa.buscarTelefone(listaDePessoas, "(99) 99999-9999");
+}
